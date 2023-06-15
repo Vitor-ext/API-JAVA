@@ -1,20 +1,15 @@
-/* Autor: ❣️🚀❣️ Vitor de Jesus ❣️🚀❣️
-   Data: 14/06/2023
- */
+package Viewer;
 
+import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 
-import javax.swing.*;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
-
-        System.out.println("Bora Fazer um CRUD!");
-
+public class Server {
+    public Server () throws IOException {
         // Cria o servidor HTTP na porta 3000
         HttpServer server = HttpServer.create(new InetSocketAddress(3000), 0);
 
@@ -25,16 +20,21 @@ public class Main {
         server.start();
 
         System.out.println("Servidor rodando em http://localhost:3000/");
-
     }
 
-    static class MyHandler implements HttpHandler {
+    public static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             // Define a resposta
-            System.out.println("Funciona  😂😂🚀");
-            JOptionPane.showMessageDialog(null, "Funciona");
+            String response = "Olá, mundo!";
+
+            // Define o código de status 200 (OK)
+            exchange.sendResponseHeaders(200, response.length());
+
+            // Obtém o fluxo de saída e escreve a resposta nele
+            OutputStream outputStream = exchange.getResponseBody();
+            outputStream.write(response.getBytes());
+            outputStream.close();
         }
     }
-
 }
