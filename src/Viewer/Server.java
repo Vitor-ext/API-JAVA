@@ -32,9 +32,10 @@ public class Server {
             exchange.sendResponseHeaders(200, response.length());
 
             // Obtém o fluxo de saída e escreve a resposta nele
-            OutputStream outputStream = exchange.getResponseBody();
+            /**OutputStream outputStream = exchange.getResponseBody();
             outputStream.write(response.getBytes());
             outputStream.close();
+            return response;*/
         }
     }
 }

@@ -2,6 +2,7 @@
    Data: 14/06/2023
  */
 
+import Model.Conexao;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -9,6 +10,9 @@ import com.sun.net.httpserver.HttpServer;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -19,7 +23,11 @@ public class Main {
         HttpServer server = HttpServer.create(new InetSocketAddress(3000), 0);
 
         // Define o manipulador para lidar com as requisições
-        server.createContext("/", new MyHandler());
+        Object res;
+        server.createContext("/", new CadastroBanco());
+
+        // Define o manipulador para lidar com as requisições listar
+        //server.createContext("/listar", new ListarClientes());
 
         // Inicia o servidor
         server.start();
@@ -28,13 +36,49 @@ public class Main {
 
     }
 
-    static class MyHandler implements HttpHandler {
+    static class CadastroBanco implements HttpHandler {
         @Override
-        public void handle(HttpExchange exchange) throws IOException {
+        public void handle(HttpExchange exchange){
             // Define a resposta
-            System.out.println("Funciona  😂😂🚀");
-            JOptionPane.showMessageDialog(null, "Funciona");
-        }
+            String sql = "Select * from tbl_clientes";
+            Conexao bd = new Conexao();
+            Connection statement = bd.getConnection();
+            try {
+                PreparedStatement preparedStatement = statement.prepareStatement(sql);
+
+                String response = String.valueOf(preparedStatement.getResultSet());
+                System.out.println(response);
+
+                // Define a resposta
+                System.out.println("Funciona  😂😂🚀");
+                JOptionPane.showMessageDialog(null, "Funciona");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+    }
+
+    /**static class ListarClientes implements HttpHandler {
+        @Override
+        public  handle(HttpExchange exchange) throws IOException {
+            // Define a resposta
+            String sql = "Select * from tbl_clientes";
+
+            try {
+                statement = bd.getConnection().prepareStatement(sql);
+                // Define a resposta
+                System.out.println("Funciona  😂😂🚀");
+                JOptionPane.showMessageDialog(null, "Funciona");
+            }
+            catch (IOException ex){
+                String erroList = "Deu Ruim";
+                return erroList;
+                System.out.println("🚀 So sorry 🚀");
+                JOptionPane.showMessageDialog(null, "🚀 Falha no Erro 🚀");
+            }
+
+        }**/
+
     }
 
 }

@@ -15,9 +15,9 @@ public class Conexao {
 
     public Conexao(){
         this.servidor  = "localhost";
-        this.banco = "db_API_java";
+        this.banco = "db_api";
         this.usuario = "root";
-        this.senha = "";
+        this.senha = "12345678";
     }
 
     public boolean Connect(){
