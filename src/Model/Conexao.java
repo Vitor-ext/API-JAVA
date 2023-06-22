@@ -8,6 +8,7 @@ package Model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Conexao {
     private String servidor, banco, usuario, senha, porta;
@@ -43,4 +44,15 @@ public class Conexao {
         return conexao;
     }
 
+    // Caso Tenha Bloqueio de SSL - Database
+    /**public static void desabilitarSSL() {
+        Properties properties = new Properties();
+        properties.setProperty("useSSL", "false");
+        properties.setProperty("verifyServerCertificate", "false");
+        properties.setProperty("requireSSL", "false");
+        properties.setProperty("enabledTLSProtocols", "TLSv1,TLSv1.1,TLSv1.2");
+
+        System.setProperties(properties);
+        return;
+    }**/
 }
