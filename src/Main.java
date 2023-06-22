@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Main {
@@ -38,16 +39,30 @@ public class Main {
 
     static class CadastroBanco implements HttpHandler {
         @Override
-        public void handle(HttpExchange exchange){
+        public void handle(HttpExchange exchange) {
             // Define a resposta
-            String sql = "Select * from tbl_clientes";
+            String sql = "Select * from tbl_cliente";
             Conexao bd = new Conexao();
             Connection statement = bd.getConnection();
             try {
+                // Usado para inserir dados
                 PreparedStatement preparedStatement = statement.prepareStatement(sql);
+                // preparedStatement = ( dados para inserir)
+                System.out.println("o try funciona");
 
-                String response = String.valueOf(preparedStatement.getResultSet());
-                System.out.println(response);
+                try {
+                    ResultSet result = preparedStatement.executeQuery();
+                    System.out.println(result);
+                    int teste = result.getInt("idCliente");
+                    System.out.println(teste);
+
+                    result.close();
+                }
+                catch (SQLException e) {
+                    System.out.println("Falho no Result");
+                }
+
+                System.out.println("chegou aqui abaixo teste");
 
                 // Define a resposta
                 System.out.println("Funciona  😂😂🚀");
@@ -56,26 +71,25 @@ public class Main {
                 throw new RuntimeException(e);
             }
 
-    }
+        }
 
-    /**static class ListarClientes implements HttpHandler {
-        @Override
-        public  handle(HttpExchange exchange) throws IOException {
-            // Define a resposta
-            String sql = "Select * from tbl_clientes";
+        /**static class ListarClientes implements HttpHandler {
+        @Override public  handle(HttpExchange exchange) throws IOException {
+        // Define a resposta
+        String sql = "Select * from tbl_clientes";
 
-            try {
-                statement = bd.getConnection().prepareStatement(sql);
-                // Define a resposta
-                System.out.println("Funciona  😂😂🚀");
-                JOptionPane.showMessageDialog(null, "Funciona");
-            }
-            catch (IOException ex){
-                String erroList = "Deu Ruim";
-                return erroList;
-                System.out.println("🚀 So sorry 🚀");
-                JOptionPane.showMessageDialog(null, "🚀 Falha no Erro 🚀");
-            }
+        try {
+        statement = bd.getConnection().prepareStatement(sql);
+        // Define a resposta
+        System.out.println("Funciona  😂😂🚀");
+        JOptionPane.showMessageDialog(null, "Funciona");
+        }
+        catch (IOException ex){
+        String erroList = "Deu Ruim";
+        return erroList;
+        System.out.println("🚀 So sorry 🚀");
+        JOptionPane.showMessageDialog(null, "🚀 Falha no Erro 🚀");
+        }
 
         }**/
 

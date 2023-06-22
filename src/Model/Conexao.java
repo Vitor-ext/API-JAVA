@@ -10,28 +10,28 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    private String servidor, banco, usuario, senha;
+    private String servidor, banco, usuario, senha, porta;
     private Connection conexao;
 
     public Conexao(){
-        this.servidor  = "localhost";
+        this.servidor  = "127.0.0.1";
+        this.porta = "3306";
         this.banco = "db_api";
         this.usuario = "root";
-        this.senha = "12345678";
+        this.senha = "";
     }
 
     public boolean Connect(){
 
         try {
-            this.conexao = DriverManager.getConnection("jdbc:mysql://"+this.servidor+"/"+this.banco,this.usuario,this.senha);
+            this.conexao = DriverManager.getConnection("jdbc:mysql://"+this.servidor+":"+this.porta+"/"+this.banco,this.usuario,this.senha);
             return true;
         }
-        catch (SQLException ex){
+        catch (SQLException ex ){
             System.out.println("OCORREU UM ERRO AO ACESSAR O BANDO DE DADOS");
             System.out.println(ex);
             return false;
-        }
-        finally{
+        } finally{
             if (conexao != null){
                 //conexao.close();
             }
